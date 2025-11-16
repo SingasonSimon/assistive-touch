@@ -18,6 +18,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+// Blur API imports were used previously; currently disabled to keep panel crisp.
+// import android.graphics.RenderEffect
+// import android.graphics.Shader
+import android.view.animation.OvershootInterpolator
 import android.media.AudioManager
 import android.provider.Settings
 import android.widget.Toast
@@ -216,6 +220,14 @@ class FloatingButtonService : Service() {
         // Center the panel on screen for clarity
         params.gravity = Gravity.CENTER
 
+        val panelRoot = view.findViewById<View>(R.id.panelRoot)
+        // Blur disabled for now – it was making content too hard to read.
+
+        // Initial state for animation
+        panelRoot.alpha = 0f
+        panelRoot.scaleX = 0.9f
+        panelRoot.scaleY = 0.9f
+
         fun wrap(action: () -> Unit): View.OnClickListener =
             View.OnClickListener {
                 action()
@@ -279,6 +291,15 @@ class FloatingButtonService : Service() {
         panelView = view
         panelLayoutParams = params
         applyPanelTheme()
+
+        // Animate in with spring-like overshoot
+        panelRoot.animate()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(220)
+            .setInterpolator(OvershootInterpolator(1.3f))
+            .start()
     }
 
     private fun applyButtonAppearance() {
@@ -307,13 +328,10 @@ class FloatingButtonService : Service() {
     }
 
     private fun applyPanelTheme() {
+        // Keep the glassmorphic dark background defined in XML;
+        // no dynamic override here so icons stay readable.
         val panelRoot = panelView ?: return
-        val themeKey = prefs.getString(SettingsActivity.KEY_PANEL_THEME, SettingsActivity.THEME_LIGHT)
-        val backgroundColor = when (themeKey) {
-            SettingsActivity.THEME_DARK -> 0xCC212121.toInt()
-            else -> 0xFFFFFFFF.toInt()
-        }
-        panelRoot.setBackgroundColor(backgroundColor)
+        panelRoot.alpha = 0.95f
     }
 
     private fun handleLongPress() {
@@ -408,9 +426,22 @@ class FloatingButtonService : Service() {
     }
 
     private fun removePanel() {
-        panelView?.let { windowManager.removeView(it) }
-        panelView = null
-        panelLayoutParams = null
+        val view = panelView ?: return
+        val panelRoot = view.findViewById<View>(R.id.panelRoot)
+        panelRoot.animate()
+            .alpha(0f)
+            .scaleX(0.9f)
+            .scaleY(0.9f)
+            .setDuration(160)
+            .withEndAction {
+                try {
+                    windowManager.removeView(view)
+                } catch (_: Exception) {
+                }
+                panelView = null
+                panelLayoutParams = null
+            }
+            .start()
     }
 
     private fun snapToEdge(params: WindowManager.LayoutParams) {

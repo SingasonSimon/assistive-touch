@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:elevation="10dp"
-    android:backgroundTint="#CC000000"
+    android:backgroundTint="#E0212121"
     android:radius="20dp">
 
     <LinearLayout

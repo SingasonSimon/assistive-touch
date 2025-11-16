@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="56dp"
     android:layout_height="56dp"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:foreground="?attr/selectableItemBackgroundBorderless">
 
     <View
         android:id="@+id/floatingButtonCore"
@@ -11,5 +12,6 @@
         android:background="@drawable/bg_floating_button" />
 
 </FrameLayout>
+
 
 
