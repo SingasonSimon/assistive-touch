@@ -24,7 +24,8 @@ import android.widget.Toast
 import android.hardware.camera2.CameraManager
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import com.example.assistivetouch.prefs.FavoritesManager
+import android.widget.SeekBar
+import android.view.ContextThemeWrapper
 import com.example.assistivetouch.R
 import com.example.assistivetouch.ui.MainActivity
 import com.example.assistivetouch.ui.SettingsActivity
@@ -52,6 +53,8 @@ class FloatingButtonService : Service() {
     private val prefs by lazy {
         getSharedPreferences("assistive_touch_prefs", Context.MODE_PRIVATE)
     }
+
+    private var isTorchOn: Boolean = false
 
     private val settingsReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -92,7 +95,8 @@ class FloatingButtonService : Service() {
     private fun addFloatingButton() {
         if (floatingView != null) return
 
-        val inflater = LayoutInflater.from(this)
+        val themedContext = ContextThemeWrapper(this, R.style.Theme_AssistiveTouch)
+        val inflater = LayoutInflater.from(themedContext)
         val view = inflater.inflate(R.layout.view_floating_button, null)
 
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -189,7 +193,8 @@ class FloatingButtonService : Service() {
     private fun showPanel() {
         if (panelView != null || floatingView == null) return
 
-        val inflater = LayoutInflater.from(this)
+        val themedContext = ContextThemeWrapper(this, R.style.Theme_AssistiveTouch)
+        val inflater = LayoutInflater.from(themedContext)
         val view = inflater.inflate(R.layout.view_action_panel, null)
 
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -208,96 +213,72 @@ class FloatingButtonService : Service() {
             PixelFormat.TRANSLUCENT
         )
 
-        val buttonParams = layoutParams
-        if (buttonParams != null && floatingView != null) {
-            params.gravity = Gravity.TOP or Gravity.START
-            params.x = buttonParams.x + (floatingView!!.width)
-            params.y = buttonParams.y
-        } else {
-            params.gravity = Gravity.CENTER
-        }
+        // Center the panel on screen for clarity
+        params.gravity = Gravity.CENTER
+
+        fun wrap(action: () -> Unit): View.OnClickListener =
+            View.OnClickListener {
+                action()
+                // Hide panel after an action for easier use
+                removePanel()
+            }
 
         // Wire core buttons
-        view.findViewById<View>(R.id.buttonHome).setOnClickListener {
-            MyAccessibilityService.getInstance()?.performHomeAction()
-        }
-        view.findViewById<View>(R.id.buttonBack).setOnClickListener {
-            MyAccessibilityService.getInstance()?.performBackAction()
-        }
-        view.findViewById<View>(R.id.buttonRecents).setOnClickListener {
-            MyAccessibilityService.getInstance()?.performRecentsAction()
-        }
-        view.findViewById<View>(R.id.buttonLock).setOnClickListener {
-            MyAccessibilityService.getInstance()?.performLockScreenAction()
-        }
-        view.findViewById<View>(R.id.buttonScreenshot).setOnClickListener {
-            MyAccessibilityService.getInstance()?.performScreenshotAction()
-        }
-        view.findViewById<View>(R.id.buttonVolume).setOnClickListener {
-            showSystemVolume()
-        }
-        view.findViewById<View>(R.id.buttonNotifications).setOnClickListener {
-            MyAccessibilityService.getInstance()?.openNotificationsPanel()
-        }
+        view.findViewById<View>(R.id.buttonHome).setOnClickListener(
+            wrap { MyAccessibilityService.getInstance()?.performHomeAction() }
+        )
+        view.findViewById<View>(R.id.buttonBack).setOnClickListener(
+            wrap { MyAccessibilityService.getInstance()?.performBackAction() }
+        )
+        view.findViewById<View>(R.id.buttonRecents).setOnClickListener(
+            wrap { MyAccessibilityService.getInstance()?.performRecentsAction() }
+        )
+        view.findViewById<View>(R.id.buttonLock).setOnClickListener(
+            wrap { MyAccessibilityService.getInstance()?.performLockScreenAction() }
+        )
+        view.findViewById<View>(R.id.buttonScreenshot).setOnClickListener(
+            wrap { MyAccessibilityService.getInstance()?.performScreenshotAction() }
+        )
+        view.findViewById<View>(R.id.buttonNotifications).setOnClickListener(
+            wrap { MyAccessibilityService.getInstance()?.openNotificationsPanel() }
+        )
 
         // System toggles & advanced actions
-        view.findViewById<View>(R.id.buttonWifi).setOnClickListener {
-            openWifiPanel()
-        }
-        view.findViewById<View>(R.id.buttonBluetooth).setOnClickListener {
-            openBluetoothSettings()
-        }
-        view.findViewById<View>(R.id.buttonRotation).setOnClickListener {
-            openDisplaySettings()
-        }
-        view.findViewById<View>(R.id.buttonFlashlight).setOnClickListener {
-            toggleFlashlight()
-        }
-        view.findViewById<View>(R.id.buttonScreenRecord).setOnClickListener {
-            showScreenRecordHint()
-        }
-        view.findViewById<View>(R.id.buttonPowerMenu).setOnClickListener {
-            openPowerSettings()
-        }
+        view.findViewById<View>(R.id.buttonWifi).setOnClickListener(
+            wrap { openWifiPanel() }
+        )
+        view.findViewById<View>(R.id.buttonBluetooth).setOnClickListener(
+            wrap { openBluetoothSettings() }
+        )
+        view.findViewById<View>(R.id.buttonFlashlight).setOnClickListener(
+            wrap { toggleFlashlight() }
+        )
+        // Volume slider (Samsung-style inspired)
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val currentVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-        // Favorites container
-        populateFavorites(view)
+        val volumeSlider = view.findViewById<SeekBar>(R.id.volumeSlider)
+        volumeSlider.max = maxVol
+        volumeSlider.progress = currentVol
+        volumeSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (!fromUser) return
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_MUSIC,
+                    progress,
+                    0
+                )
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
 
         windowManager.addView(view, params)
         panelView = view
         panelLayoutParams = params
         applyPanelTheme()
-    }
-
-    private fun populateFavorites(panel: View) {
-        val container = panel.findViewById<LinearLayout>(R.id.favoritesContainer)
-        container.removeAllViews()
-
-        val favoritePkgs = FavoritesManager.getFavoritePackages(this)
-        if (favoritePkgs.isEmpty()) return
-
-        val pm = packageManager
-        favoritePkgs.forEach { pkg ->
-            val launchIntent = pm.getLaunchIntentForPackage(pkg)
-            if (launchIntent != null) {
-                val icon = pm.getApplicationIcon(pkg)
-                val button = ImageButton(this).apply {
-                    setImageDrawable(icon)
-                    layoutParams = LinearLayout.LayoutParams(
-                        96,
-                        96
-                    ).apply {
-                        rightMargin = 8
-                    }
-                    background = null
-                    setOnClickListener {
-                        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(launchIntent)
-                    }
-                }
-                container.addView(button)
-            }
-        }
     }
 
     private fun applyButtonAppearance() {
@@ -364,6 +345,16 @@ class FloatingButtonService : Service() {
         )
     }
 
+    private fun adjustVolume(direction: Int) {
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        @Suppress("DEPRECATION")
+        audioManager.adjustStreamVolume(
+            AudioManager.STREAM_MUSIC,
+            direction,
+            AudioManager.FLAG_SHOW_UI
+        )
+    }
+
     private fun openWifiPanel() {
         // Use Settings Panel where available; fall back to Wi-Fi settings.
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -391,8 +382,10 @@ class FloatingButtonService : Service() {
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
             val cameraId = cameraManager.cameraIdList.firstOrNull() ?: return
-            // Query current state is not trivial; just try toggling on for now.
-            cameraManager.setTorchMode(cameraId, true)
+            isTorchOn = !isTorchOn
+            cameraManager.setTorchMode(cameraId, isTorchOn)
+        } catch (e: SecurityException) {
+            Toast.makeText(this, "Camera permission required for torch", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, "Flashlight control not supported", Toast.LENGTH_SHORT).show()
         }
@@ -401,16 +394,17 @@ class FloatingButtonService : Service() {
     private fun showScreenRecordHint() {
         Toast.makeText(
             this,
-            "Use your device's built-in screen recorder from Quick Settings.",
+            "Screen recording is not available on this device. Use Samsung's built‑in recorder if present in Quick Settings.",
             Toast.LENGTH_LONG
         ).show()
     }
 
     private fun openPowerSettings() {
-        // There is no public API for power menu; open general settings as best-effort.
-        val intent = Intent(Settings.ACTION_SETTINGS)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
+        Toast.makeText(
+            this,
+            "Android does not allow third‑party apps to open the power menu.",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun removePanel() {

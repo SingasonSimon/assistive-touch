@@ -3,10 +3,6 @@
 build/
 **/build/
 
-# Local configuration
-local.properties
-gradle.properties
-
 # IDE files
 .idea/
 *.iml

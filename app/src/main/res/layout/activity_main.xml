@@ -147,34 +147,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Customization cards -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/buttonFavorites"
-                style="@style/AssistiveMainCard"
-                app:cardBackgroundColor="?attr/colorSurface">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:tint="?attr/colorPrimary"
-                        android:src="@drawable/ic_star" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:text="@string/manage_favorites"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
+            <!-- Settings card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/buttonSettings"
                 style="@style/AssistiveMainCard"

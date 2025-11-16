@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonOverlayPermission: MaterialCardView
     private lateinit var buttonAccessibility: MaterialCardView
     private lateinit var buttonStartService: MaterialCardView
-    private lateinit var buttonFavorites: MaterialCardView
     private lateinit var buttonSettings: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         buttonOverlayPermission = findViewById(R.id.buttonOverlayPermission)
         buttonAccessibility = findViewById(R.id.buttonAccessibility)
         buttonStartService = findViewById(R.id.buttonStartService)
-        buttonFavorites = findViewById(R.id.buttonFavorites)
         buttonSettings = findViewById(R.id.buttonSettings)
 
         buttonOverlayPermission.setOnClickListener {
@@ -55,11 +53,6 @@ class MainActivity : AppCompatActivity() {
                 // Encourage user to grant permissions first
                 updateStatus()
             }
-        }
-
-        buttonFavorites.setOnClickListener {
-            val intent = Intent(this, FavoritesActivity::class.java)
-            startActivity(intent)
         }
 
         buttonSettings.setOnClickListener {

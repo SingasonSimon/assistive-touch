@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:elevation="10dp"
-    android:backgroundTint="#F2F2F2"
-    android:radius="16dp">
+    android:backgroundTint="#CC000000"
+    android:radius="20dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,10 +25,12 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_home" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="Home" />
             </LinearLayout>
 
@@ -38,10 +40,12 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_back" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="Back" />
             </LinearLayout>
 
@@ -51,10 +55,12 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_recents" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="Apps" />
             </LinearLayout>
         </LinearLayout>
@@ -72,10 +78,12 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_lock" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="Lock" />
             </LinearLayout>
 
@@ -85,24 +93,28 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_screenshot" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="Shot" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/buttonVolume"
+                android:id="@+id/buttonFlashlight"
                 style="@style/PanelItem" >
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_volume" />
+                    android:tint="@android:color/white"
+                    android:src="@drawable/ic_flashlight" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vol" />
+                    android:textColor="@android:color/white"
+                    android:text="Torch" />
             </LinearLayout>
         </LinearLayout>
 
@@ -119,10 +131,12 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_notifications" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="Notif" />
             </LinearLayout>
 
@@ -132,10 +146,12 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_wifi" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="Wi‑Fi" />
             </LinearLayout>
 
@@ -145,87 +161,31 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@android:color/white"
                     android:src="@drawable/ic_bluetooth" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="BT" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Fourth row -->
+        <!-- Bottom row: volume slider -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="8dp">
 
-            <LinearLayout
-                android:id="@+id/buttonRotation"
-                style="@style/PanelItem" >
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_rotation" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rotate" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/buttonFlashlight"
-                style="@style/PanelItem" >
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_flashlight" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Torch" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/buttonScreenRecord"
-                style="@style/PanelItem" >
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_record" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Record" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Bottom row: Power + favorites -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <LinearLayout
-                android:id="@+id/buttonPowerMenu"
-                style="@style/PanelItem" >
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_power" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Power" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/favoritesContainer"
-                android:layout_width="wrap_content"
+            <SeekBar
+                android:id="@+id/volumeSlider"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:max="100"
+                android:progressTint="@color/teal_200"
+                android:thumbTint="@color/teal_200" />
         </LinearLayout>
 
     </LinearLayout>
