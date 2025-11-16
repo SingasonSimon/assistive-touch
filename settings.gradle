@@ -1,0 +1,4 @@
+rootProject.name = "AssistiveTouchKotlin"
+include(":app")
+
+

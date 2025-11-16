@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Assistive Touch Kotlin</string>
+    <string name="accessibility_service_description">
+        Assistive Touch service that provides quick navigation and device controls.
+    </string>
+    <string name="permission_draw_over">Grant Draw Over Other Apps</string>
+    <string name="permission_accessibility">Open Accessibility Settings</string>
+    <string name="permission_status_overlay">Overlay permission: %1$s</string>
+    <string name="permission_status_accessibility">Accessibility service: %1$s</string>
+    <string name="status_granted">granted</string>
+    <string name="status_not_granted">not granted</string>
+    <string name="start_floating_service">Start Assistive Touch</string>
+    <string name="manage_favorites">Manage Favorite Apps</string>
+    <string name="settings_button_size">Floating button size (dp)</string>
+    <string name="settings_button_alpha">Floating button transparency</string>
+    <string name="settings_button_color">Floating button color</string>
+    <string name="settings_panel_theme">Panel theme</string>
+    <string name="settings_long_press">Floating button long-press action</string>
+    <string name="settings_apply">Apply</string>
+    <string name="open_settings">Open Settings</string>
+</resources>
+
+

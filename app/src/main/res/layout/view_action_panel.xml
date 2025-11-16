@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/panelRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@android:color/white"
+    android:elevation="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonHome"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="Home" />
+
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="Back"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonRecents"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="Apps"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/buttonLock"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="Lock" />
+
+        <Button
+            android:id="@+id/buttonScreenshot"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="Shot"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonVolume"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="Vol"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/buttonNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notif" />
+
+        <Button
+            android:id="@+id/buttonWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wi-Fi"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonBluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BT"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/buttonRotation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rotate" />
+
+        <Button
+            android:id="@+id/buttonFlashlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Torch"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonScreenRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonPowerMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Power"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/favoritesContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>
+
+
