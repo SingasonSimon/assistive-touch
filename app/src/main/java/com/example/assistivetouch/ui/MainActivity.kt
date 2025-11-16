@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textStatus: TextView
     private lateinit var buttonOverlayPermission: MaterialCardView
     private lateinit var buttonAccessibility: MaterialCardView
+    private lateinit var buttonWriteSettings: MaterialCardView
     private lateinit var buttonStartService: MaterialCardView
     private lateinit var buttonSettings: MaterialCardView
 
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         textStatus = findViewById(R.id.textStatus)
         buttonOverlayPermission = findViewById(R.id.buttonOverlayPermission)
         buttonAccessibility = findViewById(R.id.buttonAccessibility)
+        buttonWriteSettings = findViewById(R.id.buttonWriteSettings)
         buttonStartService = findViewById(R.id.buttonStartService)
         buttonSettings = findViewById(R.id.buttonSettings)
 
@@ -44,6 +46,10 @@ class MainActivity : AppCompatActivity() {
 
         buttonAccessibility.setOnClickListener {
             openAccessibilitySettings()
+        }
+
+        buttonWriteSettings.setOnClickListener {
+            openWriteSettings()
         }
 
         buttonStartService.setOnClickListener {
@@ -58,6 +64,18 @@ class MainActivity : AppCompatActivity() {
         buttonSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun openWriteSettings() {
+        if (!Settings.System.canWrite(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_WRITE_SETTINGS,
+                Uri.parse("package:$packageName")
+            )
+            startActivity(intent)
+        } else {
+            // Already granted; nothing else to do
         }
     }
 

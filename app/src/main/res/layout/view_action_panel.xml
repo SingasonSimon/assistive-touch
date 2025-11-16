@@ -16,159 +16,135 @@
 
         <!-- First row -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <LinearLayout
                 android:id="@+id/buttonHome"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_home" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Home" />
+                    android:src="@drawable/ic_home_modern" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonBack"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_back" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Back" />
+                    android:src="@drawable/ic_back_modern" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonRecents"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_recents" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Apps" />
+                    android:src="@drawable/ic_apps_modern" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Second row -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:layout_marginTop="8dp">
 
             <LinearLayout
                 android:id="@+id/buttonLock"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_lock" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Lock" />
+                    android:src="@drawable/ic_lock_modern" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonScreenshot"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_screenshot" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Shot" />
+                    android:src="@drawable/ic_screenshot_modern" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonFlashlight"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_flashlight" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Torch" />
+                    android:src="@drawable/ic_torch_modern" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Third row -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:layout_marginTop="8dp">
 
             <LinearLayout
                 android:id="@+id/buttonNotifications"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_notifications" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Notif" />
+                    android:src="@drawable/ic_bell_modern" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonWifi"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_wifi" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Wi‑Fi" />
+                    android:src="@drawable/ic_wifi_modern" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonBluetooth"
-                style="@style/PanelItem" >
+                style="@style/PanelItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_bluetooth" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="BT" />
+                    android:src="@drawable/ic_bluetooth_modern" />
             </LinearLayout>
 
         </LinearLayout>
@@ -194,7 +170,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_volume_down" />
+                    android:src="@drawable/ic_speaker_modern" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/volumeSlider"
@@ -208,7 +184,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_volume_up" />
+                    android:src="@drawable/ic_speaker_modern" />
             </LinearLayout>
         </LinearLayout>
 
@@ -233,7 +209,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_brightness_low" />
+                    android:src="@drawable/ic_sun_modern" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/brightnessSlider"
@@ -247,46 +223,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_brightness_high" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Brightness slider -->
-        <LinearLayout
-            android:layout_width="260dp"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_volume_pill"
-                android:paddingHorizontal="12dp">
-
-                <ImageView
-                    android:id="@+id/iconBrightnessDown"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_dark_mode" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/brightnessSlider"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/iconBrightnessUp"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:tint="?attr/colorOnSurface"
-                    android:src="@drawable/ic_light_mode" />
+                    android:src="@drawable/ic_sun_modern" />
             </LinearLayout>
         </LinearLayout>
 

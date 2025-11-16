@@ -229,39 +229,48 @@ class FloatingButtonService : Service() {
         panelRoot.scaleX = 0.9f
         panelRoot.scaleY = 0.9f
 
-        // Wrap click actions; keep panel open to avoid flicker when actions trigger system UI.
-        fun wrap(action: () -> Unit): View.OnClickListener =
-            View.OnClickListener { action() }
+        // Wrap click actions; run action then minimize panel so system UI (e.g. screenshot) works as expected.
+        fun wrapAndClose(action: () -> Unit): View.OnClickListener =
+            View.OnClickListener {
+                action()
+                removePanel()
+            }
 
         // Wire core buttons
         view.findViewById<View>(R.id.buttonHome).setOnClickListener(
-            wrap { MyAccessibilityService.getInstance()?.performHomeAction() }
+            wrapAndClose { MyAccessibilityService.getInstance()?.performHomeAction() }
         )
         view.findViewById<View>(R.id.buttonBack).setOnClickListener(
-            wrap { MyAccessibilityService.getInstance()?.performBackAction() }
+            wrapAndClose { MyAccessibilityService.getInstance()?.performBackAction() }
         )
         view.findViewById<View>(R.id.buttonRecents).setOnClickListener(
-            wrap { MyAccessibilityService.getInstance()?.performRecentsAction() }
+            wrapAndClose { MyAccessibilityService.getInstance()?.performRecentsAction() }
         )
         view.findViewById<View>(R.id.buttonLock).setOnClickListener(
-            wrap { MyAccessibilityService.getInstance()?.performLockScreenAction() }
+            wrapAndClose { MyAccessibilityService.getInstance()?.performLockScreenAction() }
         )
-        view.findViewById<View>(R.id.buttonScreenshot).setOnClickListener(
-            wrap { MyAccessibilityService.getInstance()?.performScreenshotAction() }
-        )
+
+        // For screenshot, close the panel first and trigger screenshot slightly later
+        val screenshotButton = view.findViewById<View>(R.id.buttonScreenshot)
+        screenshotButton.setOnClickListener {
+            removePanel()
+            screenshotButton.postDelayed({
+                MyAccessibilityService.getInstance()?.performScreenshotAction()
+            }, 280L)
+        }
         view.findViewById<View>(R.id.buttonNotifications).setOnClickListener(
-            wrap { MyAccessibilityService.getInstance()?.openNotificationsPanel() }
+            wrapAndClose { MyAccessibilityService.getInstance()?.openNotificationsPanel() }
         )
 
         // System toggles & advanced actions
         view.findViewById<View>(R.id.buttonWifi).setOnClickListener(
-            wrap { openWifiPanel() }
+            wrapAndClose { openWifiPanel() }
         )
         view.findViewById<View>(R.id.buttonBluetooth).setOnClickListener(
-            wrap { openBluetoothSettings() }
+            wrapAndClose { openBluetoothSettings() }
         )
         view.findViewById<View>(R.id.buttonFlashlight).setOnClickListener(
-            wrap { toggleFlashlight() }
+            wrapAndClose { toggleFlashlight() }
         )
         // Volume slider with icons + haptics
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
