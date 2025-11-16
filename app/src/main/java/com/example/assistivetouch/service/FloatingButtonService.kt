@@ -29,6 +29,7 @@ import android.hardware.camera2.CameraManager
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.content.res.ColorStateList
 import android.view.ContextThemeWrapper
 import com.example.assistivetouch.R
 import com.example.assistivetouch.ui.MainActivity
@@ -273,6 +274,13 @@ class FloatingButtonService : Service() {
         volumeSlider.stepSize = 1f
         volumeSlider.value = currentVol.toFloat()
 
+        // Colors for track and thumb
+        val appleGreen = 0xFF32D74B.toInt()
+        volumeSlider.trackActiveTintList = ColorStateList.valueOf(appleGreen)
+        volumeSlider.trackInactiveTintList = ColorStateList.valueOf(0xFF555555.toInt())
+        volumeSlider.thumbTintList = ColorStateList.valueOf(0xFFFFFFFF.toInt())
+        volumeSlider.haloTintList = ColorStateList.valueOf(appleGreen)
+
         var lastVolume = currentVol
 
         volumeSlider.addOnChangeListener { slider, value, fromUser ->
@@ -285,6 +293,56 @@ class FloatingButtonService : Service() {
                     vol,
                     0
                 )
+                slider.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            }
+        }
+
+        // Brightness slider
+        val brightnessSlider = view.findViewById<com.google.android.material.slider.Slider>(R.id.brightnessSlider)
+        val resolver = contentResolver
+        val maxBrightness = 255
+        val currentBrightness = try {
+            Settings.System.getInt(resolver, Settings.System.SCREEN_BRIGHTNESS)
+        } catch (e: Settings.SettingNotFoundException) {
+            128
+        }
+
+        brightnessSlider.valueFrom = 0f
+        brightnessSlider.valueTo = maxBrightness.toFloat()
+        brightnessSlider.stepSize = 1f
+        brightnessSlider.value = currentBrightness.toFloat()
+
+        val yellow = 0xFFFFD43B.toInt()
+        brightnessSlider.trackActiveTintList = ColorStateList.valueOf(yellow)
+        brightnessSlider.trackInactiveTintList = ColorStateList.valueOf(0xFF555555.toInt())
+        brightnessSlider.thumbTintList = ColorStateList.valueOf(0xFFFFFFFF.toInt())
+        brightnessSlider.haloTintList = ColorStateList.valueOf(yellow)
+
+        var lastBrightness = currentBrightness
+
+        brightnessSlider.addOnChangeListener { slider, value, fromUser ->
+            if (!fromUser) return@addOnChangeListener
+            val b = value.toInt().coerceIn(0, maxBrightness)
+            if (b != lastBrightness) {
+                lastBrightness = b
+                if (Settings.System.canWrite(this)) {
+                    Settings.System.putInt(
+                        resolver,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+                    )
+                    Settings.System.putInt(
+                        resolver,
+                        Settings.System.SCREEN_BRIGHTNESS,
+                        b
+                    )
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Allow modify system settings to change brightness.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 slider.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
             }
         }

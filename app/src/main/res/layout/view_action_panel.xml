@@ -201,13 +201,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_weight="1"
-                    app:trackColorActive="@color/teal_200"
-                    app:trackColorInactive="@android:color/darker_gray"
-                    app:thumbTint="@android:color/white"
-                    app:haloTint="@color/teal_200"
-                    app:valueFrom="0"
-                    app:valueTo="100" />
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/iconVolumeUp"
@@ -215,6 +209,84 @@
                     android:layout_height="28dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_volume_up" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Brightness slider -->
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_volume_pill"
+                android:paddingHorizontal="12dp">
+
+                <ImageView
+                    android:id="@+id/iconBrightnessLow"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
+                    android:src="@drawable/ic_brightness_low" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/brightnessSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iconBrightnessHigh"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
+                    android:src="@drawable/ic_brightness_high" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Brightness slider -->
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_volume_pill"
+                android:paddingHorizontal="12dp">
+
+                <ImageView
+                    android:id="@+id/iconBrightnessDown"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
+                    android:src="@drawable/ic_dark_mode" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/brightnessSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iconBrightnessUp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
+                    android:src="@drawable/ic_light_mode" />
             </LinearLayout>
         </LinearLayout>
 
