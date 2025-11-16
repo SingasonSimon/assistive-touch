@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/panelRoot"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -174,18 +175,47 @@
 
         <!-- Bottom row: volume slider -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="260dp"
+            android:layout_height="48dp"
             android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp">
 
-            <SeekBar
-                android:id="@+id/volumeSlider"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:max="100"
-                android:progressTint="@color/teal_200"
-                android:thumbTint="@color/teal_200" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_volume_pill"
+                android:paddingHorizontal="12dp">
+
+                <ImageView
+                    android:id="@+id/iconVolumeDown"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
+                    android:src="@drawable/ic_volume_down" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/volumeSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    app:trackColorActive="@color/teal_200"
+                    app:trackColorInactive="@android:color/darker_gray"
+                    app:thumbTint="@android:color/white"
+                    app:haloTint="@color/teal_200"
+                    app:valueFrom="0"
+                    app:valueTo="100" />
+
+                <ImageView
+                    android:id="@+id/iconVolumeUp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
+                    android:src="@drawable/ic_volume_up" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

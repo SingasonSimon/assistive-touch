@@ -262,27 +262,32 @@ class FloatingButtonService : Service() {
         view.findViewById<View>(R.id.buttonFlashlight).setOnClickListener(
             wrap { toggleFlashlight() }
         )
-        // Volume slider (Samsung-style inspired)
+        // Volume slider with icons + haptics
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         val currentVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-        val volumeSlider = view.findViewById<SeekBar>(R.id.volumeSlider)
-        volumeSlider.max = maxVol
-        volumeSlider.progress = currentVol
-        volumeSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (!fromUser) return
+        val volumeSlider = view.findViewById<com.google.android.material.slider.Slider>(R.id.volumeSlider)
+        volumeSlider.valueFrom = 0f
+        volumeSlider.valueTo = maxVol.toFloat()
+        volumeSlider.stepSize = 1f
+        volumeSlider.value = currentVol.toFloat()
+
+        var lastVolume = currentVol
+
+        volumeSlider.addOnChangeListener { slider, value, fromUser ->
+            if (!fromUser) return@addOnChangeListener
+            val vol = value.toInt().coerceIn(0, maxVol)
+            if (vol != lastVolume) {
+                lastVolume = vol
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_MUSIC,
-                    progress,
+                    vol,
                     0
                 )
+                slider.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        }
 
         windowManager.addView(view, params)
         panelView = view
