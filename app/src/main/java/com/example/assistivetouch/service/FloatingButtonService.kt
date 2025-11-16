@@ -228,12 +228,9 @@ class FloatingButtonService : Service() {
         panelRoot.scaleX = 0.9f
         panelRoot.scaleY = 0.9f
 
+        // Wrap click actions; keep panel open to avoid flicker when actions trigger system UI.
         fun wrap(action: () -> Unit): View.OnClickListener =
-            View.OnClickListener {
-                action()
-                // Hide panel after an action for easier use
-                removePanel()
-            }
+            View.OnClickListener { action() }
 
         // Wire core buttons
         view.findViewById<View>(R.id.buttonHome).setOnClickListener(

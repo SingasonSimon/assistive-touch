@@ -23,9 +23,9 @@
                 android:id="@+id/buttonHome"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_home" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -38,9 +38,9 @@
                 android:id="@+id/buttonBack"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_back" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -53,9 +53,9 @@
                 android:id="@+id/buttonRecents"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_recents" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -76,9 +76,9 @@
                 android:id="@+id/buttonLock"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_lock" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,9 +91,9 @@
                 android:id="@+id/buttonScreenshot"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_screenshot" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -106,9 +106,9 @@
                 android:id="@+id/buttonFlashlight"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_flashlight" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,9 +129,9 @@
                 android:id="@+id/buttonNotifications"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_notifications" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -144,9 +144,9 @@
                 android:id="@+id/buttonWifi"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_wifi" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -159,9 +159,9 @@
                 android:id="@+id/buttonBluetooth"
                 style="@style/PanelItem" >
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:tint="@android:color/white"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_bluetooth" />
                 <TextView
                     android:layout_width="wrap_content"
