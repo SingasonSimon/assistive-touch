@@ -5,26 +5,33 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.assistivetouch.R
 import com.example.assistivetouch.service.FloatingButtonService
 import com.example.assistivetouch.service.MyAccessibilityService
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.card.MaterialCardView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var textStatus: TextView
-    private lateinit var buttonOverlayPermission: Button
-    private lateinit var buttonAccessibility: Button
-    private lateinit var buttonStartService: Button
-    private lateinit var buttonFavorites: Button
-    private lateinit var buttonSettings: Button
+    private lateinit var buttonOverlayPermission: MaterialCardView
+    private lateinit var buttonAccessibility: MaterialCardView
+    private lateinit var buttonStartService: MaterialCardView
+    private lateinit var buttonFavorites: MaterialCardView
+    private lateinit var buttonSettings: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         textStatus = findViewById(R.id.textStatus)
         buttonOverlayPermission = findViewById(R.id.buttonOverlayPermission)

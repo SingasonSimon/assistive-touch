@@ -18,6 +18,8 @@
     <string name="settings_long_press">Floating button long-press action</string>
     <string name="settings_apply">Apply</string>
     <string name="open_settings">Open Settings</string>
+    <string name="main_hint_overlay">Required so the floating button can appear over apps.</string>
+    <string name="main_hint_accessibility">Required to perform Home, Back and other system actions.</string>
 </resources>
 
 

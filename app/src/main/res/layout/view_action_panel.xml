@@ -1,136 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/panelRoot"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="12dp"
-    android:background="@android:color/white"
-    android:elevation="8dp">
+    android:elevation="10dp"
+    android:backgroundTint="#F2F2F2"
+    android:radius="16dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonHome"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="Home" />
+        <!-- First row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/buttonBack"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="Back"
-            android:layout_marginStart="8dp" />
+            <LinearLayout
+                android:id="@+id/buttonHome"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonRecents"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="Apps"
-            android:layout_marginStart="8dp" />
+            <LinearLayout
+                android:id="@+id/buttonBack"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_back" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Back" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonRecents"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_recents" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apps" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Second row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:id="@+id/buttonLock"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_lock" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lock" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonScreenshot"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_screenshot" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shot" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonVolume"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_volume" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vol" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Third row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:id="@+id/buttonNotifications"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_notifications" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notif" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonWifi"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_wifi" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wi‑Fi" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonBluetooth"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_bluetooth" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BT" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Fourth row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:id="@+id/buttonRotation"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_rotation" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rotate" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonFlashlight"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_flashlight" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Torch" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonScreenRecord"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_record" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Record" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Bottom row: Power + favorites -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:id="@+id/buttonPowerMenu"
+                style="@style/PanelItem" >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_power" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Power" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/favoritesContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+</com.google.android.material.card.MaterialCardView>
 
-        <Button
-            android:id="@+id/buttonLock"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="Lock" />
-
-        <Button
-            android:id="@+id/buttonScreenshot"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="Shot"
-            android:layout_marginStart="8dp" />
-
-        <Button
-            android:id="@+id/buttonVolume"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="Vol"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-
-        <Button
-            android:id="@+id/buttonNotifications"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notif" />
-
-        <Button
-            android:id="@+id/buttonWifi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wi-Fi"
-            android:layout_marginStart="8dp" />
-
-        <Button
-            android:id="@+id/buttonBluetooth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BT"
-            android:layout_marginStart="8dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-
-        <Button
-            android:id="@+id/buttonRotation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rotate" />
-
-        <Button
-            android:id="@+id/buttonFlashlight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Torch"
-            android:layout_marginStart="8dp" />
-
-        <Button
-            android:id="@+id/buttonScreenRecord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Record"
-            android:layout_marginStart="8dp" />
-
-        <Button
-            android:id="@+id/buttonPowerMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Power"
-            android:layout_marginStart="8dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/favoritesContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp" />
-
-</LinearLayout>
 
 
