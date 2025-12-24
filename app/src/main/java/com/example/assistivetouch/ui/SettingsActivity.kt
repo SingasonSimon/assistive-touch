@@ -11,11 +11,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.assistivetouch.R
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.slider.Slider
 
 class SettingsActivity : AppCompatActivity() {
 
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var sizeSlider: Slider
     private lateinit var alphaSlider: Slider
     private lateinit var colorGroup: RadioGroup
@@ -29,6 +31,13 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            finish()
+            overridePendingTransition(R.anim.slide_out_left, R.anim.fade_in)
+        }
 
         sizeSlider = findViewById(R.id.seekSize)
         alphaSlider = findViewById(R.id.seekAlpha)

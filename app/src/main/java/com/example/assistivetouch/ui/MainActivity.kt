@@ -9,6 +9,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.assistivetouch.R
@@ -84,14 +85,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openWriteSettings() {
-        if (!Settings.System.canWrite(this)) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_WRITE_SETTINGS,
-                Uri.parse("package:$packageName")
-            )
+        if (Settings.System.canWrite(this)) {
+            // Already granted - show notification
+            Toast.makeText(
+                this,
+                "Write settings permission is already granted",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        // Always open settings screen so user can verify/change
+        try {
+            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+                data = Uri.parse("package:$packageName")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
             startActivity(intent)
-        } else {
-            // Already granted; nothing else to do
+        } catch (e: Exception) {
+            // Fallback to general settings if specific intent fails
+            Toast.makeText(
+                this,
+                "Please enable 'Modify system settings' permission in Settings",
+                Toast.LENGTH_LONG
+            ).show()
+            val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
     }
 
@@ -160,12 +179,41 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestOverlayPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:$packageName")
-            )
-            startActivity(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.canDrawOverlays(this)) {
+                // Already granted - show notification
+                Toast.makeText(
+                    this,
+                    "Draw over other apps permission is already granted",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            // Always open settings screen so user can verify/change
+            try {
+                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).apply {
+                    data = Uri.parse("package:$packageName")
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(intent)
+            } catch (e: Exception) {
+                // Fallback to general settings if specific intent fails
+                Toast.makeText(
+                    this,
+                    "Please enable 'Display over other apps' permission in Settings",
+                    Toast.LENGTH_LONG
+                ).show()
+                val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(intent)
+            }
+        } else {
+            // Android < M doesn't need this permission
+            Toast.makeText(
+                this,
+                "Draw over other apps permission is not required on this Android version",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
