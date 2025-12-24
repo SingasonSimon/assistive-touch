@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Assistive Touch Kotlin</string>
     <string name="accessibility_service_description">
-        Assistive Touch service that provides quick navigation and device controls.
+        Assistive Touch provides a floating button for quick navigation (Home, Back, Recents) and device controls (brightness, volume, notifications). This is a safe, open-source accessibility tool.
     </string>
     <string name="permission_draw_over">Grant Draw Over Other Apps</string>
     <string name="permission_accessibility">Open Accessibility Settings</string>

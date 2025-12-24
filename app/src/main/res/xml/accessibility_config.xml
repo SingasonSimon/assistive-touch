@@ -6,7 +6,7 @@
     android:canRetrieveWindowContent="true"
     android:canPerformGestures="true"
     android:description="@string/accessibility_service_description"
-    android:settingsActivity=""
+    android:settingsActivity="com.example.assistivetouch.ui.MainActivity"
     android:accessibilityFlags="flagDefault" />
 
 

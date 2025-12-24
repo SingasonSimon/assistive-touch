@@ -218,9 +218,64 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openAccessibilitySettings() {
-        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
+        if (MyAccessibilityService.isEnabled(this)) {
+            // Already enabled - show notification
+            Toast.makeText(
+                this,
+                "Accessibility service is already enabled",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            // Show helpful message about restricted settings
+            android.app.AlertDialog.Builder(this)
+                .setTitle("Enable Accessibility Service")
+                .setMessage("If you see a 'Restricted setting' dialog:\n\n" +
+                        "1. Tap 'OK' on the restricted setting dialog\n" +
+                        "2. Go to Settings > Apps > Assistive Touch Kotlin\n" +
+                        "3. Tap 'More options' (three dots)\n" +
+                        "4. Enable 'Allow restricted settings'\n" +
+                        "5. Return here and try again\n\n" +
+                        "This is required for security on Android 13+.")
+                .setPositiveButton("Open Accessibility Settings") { _, _ ->
+                    try {
+                        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this,
+                            "Please enable Accessibility Service in Settings",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                        startActivity(intent)
+                    }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+            return
+        }
+        
+        // If already enabled, just open settings
+        try {
+            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(
+                this,
+                "Please enable Accessibility Service in Settings",
+                Toast.LENGTH_LONG
+            ).show()
+            val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+        }
     }
 
     private fun startFloatingService() {
