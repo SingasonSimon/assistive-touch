@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listApps"
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Search apps"
+        app:startIconDrawable="@android:drawable/ic_menu_search"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionSearch" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerApps"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:choiceMode="multipleChoice" />
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSaveFavorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save favorites" />
+        android:layout_margin="16dp"
+        android:text="Save favorites"
+        style="@style/Widget.Material3.Button"
+        app:cornerRadius="12dp" />
 
 </LinearLayout>
 

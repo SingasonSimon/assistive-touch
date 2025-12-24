@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/panelBackdrop"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    android:clickable="true"
+    android:focusable="true">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/panelRoot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="20dp"
+        app:cardElevation="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardBackgroundColor="#F5FFFFFF"
+        android:elevation="24dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- First row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingHorizontal="4dp">
+
+                <LinearLayout
+                    android:id="@+id/buttonHome"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_home_modern" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonBack"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_back_modern" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonRecents"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_apps_modern" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Second row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:paddingHorizontal="4dp">
+
+                <LinearLayout
+                    android:id="@+id/buttonLock"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_lock_modern" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonScreenshot"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_screenshot_modern" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonFlashlight"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_torch_modern" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Third row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:paddingHorizontal="4dp">
+
+                <LinearLayout
+                    android:id="@+id/buttonNotifications"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_bell_modern" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonWifi"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_wifi_modern" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonBluetooth"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_bluetooth_modern" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Bottom row: volume slider -->
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/volumeSliderContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="28dp"
+                    app:cardBackgroundColor="#F0F0F0">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp">
+
+                        <ImageView
+                            android:id="@+id/iconVolumeDown"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:tint="#666666"
+                            android:src="@drawable/ic_speaker_modern" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/volumeSlider"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/iconVolumeUp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:tint="#666666"
+                            android:src="@drawable/ic_speaker_modern" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Brightness slider -->
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/brightnessSliderContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="28dp"
+                    app:cardBackgroundColor="#F0F0F0">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp">
+
+                        <ImageView
+                            android:id="@+id/iconBrightnessLow"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:tint="#666666"
+                            android:src="@drawable/ic_sun_modern" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/brightnessSlider"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/iconBrightnessHigh"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:tint="#666666"
+                            android:src="@drawable/ic_sun_modern" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>
+

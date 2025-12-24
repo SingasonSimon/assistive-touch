@@ -5,8 +5,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.HapticFeedbackConstants
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.assistivetouch.R
 import com.example.assistivetouch.service.FloatingButtonService
 import com.example.assistivetouch.service.MyAccessibilityService
@@ -16,7 +20,10 @@ import com.google.android.material.card.MaterialCardView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var toolbar: MaterialToolbar
-    private lateinit var textStatus: TextView
+    private lateinit var iconOverlayStatus: ImageView
+    private lateinit var iconAccessibilityStatus: ImageView
+    private lateinit var iconOverlayStatusLarge: ImageView
+    private lateinit var iconAccessibilityStatusLarge: ImageView
     private lateinit var buttonOverlayPermission: MaterialCardView
     private lateinit var buttonAccessibility: MaterialCardView
     private lateinit var buttonWriteSettings: MaterialCardView
@@ -33,7 +40,10 @@ class MainActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        textStatus = findViewById(R.id.textStatus)
+        iconOverlayStatus = findViewById(R.id.iconOverlayStatus)
+        iconAccessibilityStatus = findViewById(R.id.iconAccessibilityStatus)
+        iconOverlayStatusLarge = findViewById(R.id.iconOverlayStatusLarge)
+        iconAccessibilityStatusLarge = findViewById(R.id.iconAccessibilityStatusLarge)
         buttonOverlayPermission = findViewById(R.id.buttonOverlayPermission)
         buttonAccessibility = findViewById(R.id.buttonAccessibility)
         buttonWriteSettings = findViewById(R.id.buttonWriteSettings)
@@ -41,18 +51,22 @@ class MainActivity : AppCompatActivity() {
         buttonSettings = findViewById(R.id.buttonSettings)
 
         buttonOverlayPermission.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             requestOverlayPermission()
         }
 
         buttonAccessibility.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             openAccessibilitySettings()
         }
 
         buttonWriteSettings.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             openWriteSettings()
         }
 
         buttonStartService.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             if (hasOverlayPermission() && MyAccessibilityService.isEnabled(this)) {
                 startFloatingService()
             } else {
@@ -62,8 +76,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonSettings.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.fade_out)
         }
     }
 
@@ -85,29 +101,54 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateStatus() {
-        val overlayStatus = if (hasOverlayPermission()) {
-            getString(R.string.status_granted)
-        } else {
-            getString(R.string.status_not_granted)
-        }
-        val accessibilityStatus = if (MyAccessibilityService.isEnabled(this)) {
-            getString(R.string.status_granted)
-        } else {
-            getString(R.string.status_not_granted)
-        }
+        val hasOverlay = hasOverlayPermission()
+        val hasAccessibility = MyAccessibilityService.isEnabled(this)
 
-        val statusText = getString(
-            R.string.permission_status_overlay,
-            overlayStatus
-        ) + "\n" + getString(
-            R.string.permission_status_accessibility,
-            accessibilityStatus
+        // Update status icons in permission card
+        iconOverlayStatus.setImageResource(
+            if (hasOverlay) R.drawable.ic_check_circle else R.drawable.ic_error_circle
+        )
+        iconOverlayStatus.setColorFilter(
+            ContextCompat.getColor(this, if (hasOverlay) R.color.success else R.color.error)
+        )
+        
+        iconAccessibilityStatus.setImageResource(
+            if (hasAccessibility) R.drawable.ic_check_circle else R.drawable.ic_error_circle
+        )
+        iconAccessibilityStatus.setColorFilter(
+            ContextCompat.getColor(this, if (hasAccessibility) R.color.success else R.color.error)
         )
 
-        textStatus.text = statusText
+        // Update status icons in action cards
+        iconOverlayStatusLarge.setImageResource(
+            if (hasOverlay) R.drawable.ic_check_circle else R.drawable.ic_error_circle
+        )
+        iconOverlayStatusLarge.setColorFilter(
+            ContextCompat.getColor(this, if (hasOverlay) R.color.success else R.color.error)
+        )
+        iconOverlayStatusLarge.visibility = if (hasOverlay) View.VISIBLE else View.GONE
+        
+        iconAccessibilityStatusLarge.setImageResource(
+            if (hasAccessibility) R.drawable.ic_check_circle else R.drawable.ic_error_circle
+        )
+        iconAccessibilityStatusLarge.setColorFilter(
+            ContextCompat.getColor(this, if (hasAccessibility) R.color.success else R.color.error)
+        )
+        iconAccessibilityStatusLarge.visibility = if (hasAccessibility) View.VISIBLE else View.GONE
 
-        buttonStartService.isEnabled = hasOverlayPermission() && MyAccessibilityService.isEnabled(this)
-        buttonStartService.alpha = if (buttonStartService.isEnabled) 1f else 0.5f
+        // Enable/disable start service button
+        buttonStartService.isEnabled = hasOverlay && hasAccessibility
+        buttonStartService.alpha = if (buttonStartService.isEnabled) 1f else 0.6f
+        
+        // Animate status changes
+        iconOverlayStatus.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150)
+            .withEndAction {
+                iconOverlayStatus.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+            }.start()
+        iconAccessibilityStatus.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150)
+            .withEndAction {
+                iconAccessibilityStatus.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+            }.start()
     }
 
     private fun hasOverlayPermission(): Boolean {

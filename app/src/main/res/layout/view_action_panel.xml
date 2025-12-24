@@ -4,10 +4,12 @@
     android:id="@+id/panelRoot"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:elevation="10dp"
+    android:padding="16dp"
+    android:elevation="16dp"
     android:backgroundTint="#E0212121"
-    android:radius="20dp">
+    android:radius="24dp"
+    android:outlineAmbientShadowColor="#40000000"
+    android:outlineSpotShadowColor="#40000000">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -27,8 +29,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_home_modern" />
             </LinearLayout>
@@ -39,8 +41,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_back_modern" />
             </LinearLayout>
@@ -51,8 +53,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_apps_modern" />
             </LinearLayout>
@@ -72,8 +74,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_lock_modern" />
             </LinearLayout>
@@ -84,8 +86,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_screenshot_modern" />
             </LinearLayout>
@@ -96,8 +98,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_torch_modern" />
             </LinearLayout>
@@ -117,8 +119,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_bell_modern" />
             </LinearLayout>
@@ -129,8 +131,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_wifi_modern" />
             </LinearLayout>
@@ -141,8 +143,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:tint="?attr/colorOnSurface"
                     android:src="@drawable/ic_bluetooth_modern" />
             </LinearLayout>
@@ -150,82 +152,94 @@
         </LinearLayout>
 
         <!-- Bottom row: volume slider -->
-        <LinearLayout
-            android:layout_width="260dp"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/volumeSliderContainer"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="12dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="#F0F0F0"
+            app:strokeWidth="0dp"
+            app:strokeColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:background="@drawable/bg_volume_pill"
-                android:paddingHorizontal="12dp">
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:minHeight="56dp">
 
                 <ImageView
                     android:id="@+id/iconVolumeDown"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:tint="?attr/colorOnSurface"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:tint="#1C1B1F"
                     android:src="@drawable/ic_speaker_modern" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/volumeSlider"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginHorizontal="12dp"
                     android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/iconVolumeUp"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:tint="?attr/colorOnSurface"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:tint="#1C1B1F"
                     android:src="@drawable/ic_speaker_modern" />
             </LinearLayout>
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Brightness slider -->
-        <LinearLayout
-            android:layout_width="260dp"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/brightnessSliderContainer"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="12dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="#F0F0F0"
+            app:strokeWidth="0dp"
+            app:strokeColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:background="@drawable/bg_volume_pill"
-                android:paddingHorizontal="12dp">
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:minHeight="56dp">
 
                 <ImageView
                     android:id="@+id/iconBrightnessLow"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:tint="?attr/colorOnSurface"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:tint="#1C1B1F"
                     android:src="@drawable/ic_sun_modern" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/brightnessSlider"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginHorizontal="12dp"
                     android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/iconBrightnessHigh"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:tint="?attr/colorOnSurface"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:tint="#1C1B1F"
                     android:src="@drawable/ic_sun_modern" />
             </LinearLayout>
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

@@ -1,12 +1,36 @@
 <resources>
-    <style name="AssistiveMainCard" parent="Widget.MaterialComponents.CardView">
+    <style name="AssistiveMainCard" parent="Widget.Material3.CardView.Elevated">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MaterialComponents.MediumComponent</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginHorizontal">20dp</item>
+        <item name="cardElevation">6dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="android:foreground">@drawable/ripple_card</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:minHeight">72dp</item>
+    </style>
+    
+    <style name="StatusIndicator" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="PermissionCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">20dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardBackgroundColor">@color/surface_variant</item>
+        <item name="android:padding">20dp</item>
     </style>
 </resources>
 

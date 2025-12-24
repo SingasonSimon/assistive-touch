@@ -31,6 +31,7 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.content.res.ColorStateList
 import android.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import com.example.assistivetouch.R
 import com.example.assistivetouch.ui.MainActivity
 import com.example.assistivetouch.ui.SettingsActivity
@@ -65,7 +66,12 @@ class FloatingButtonService : Service() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == SettingsActivity.ACTION_SETTINGS_CHANGED) {
                 applyButtonAppearance()
-                applyPanelTheme()
+                // Reapply theme if panel is visible
+                if (panelView != null) {
+                    panelView?.post {
+                        applyPanelTheme()
+                    }
+                }
             }
         }
     }
@@ -88,11 +94,23 @@ class FloatingButtonService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        floatingView?.let { windowManager.removeView(it) }
+        try {
+            floatingView?.let { windowManager.removeView(it) }
+        } catch (e: Exception) {
+            // View may have already been removed
+        }
         floatingView = null
-        panelView?.let { windowManager.removeView(it) }
+        try {
+            panelView?.let { windowManager.removeView(it) }
+        } catch (e: Exception) {
+            // View may have already been removed
+        }
         panelView = null
-        unregisterReceiver(settingsReceiver)
+        try {
+            unregisterReceiver(settingsReceiver)
+        } catch (e: Exception) {
+            // Receiver may have already been unregistered
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -116,7 +134,8 @@ class FloatingButtonService : Service() {
             WindowManager.LayoutParams.WRAP_CONTENT,
             layoutType,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
@@ -135,7 +154,7 @@ class FloatingButtonService : Service() {
             }
         }
 
-        view.setOnTouchListener { _, event ->
+        view.setOnTouchListener { v, event ->
             val paramsRef = layoutParams ?: params
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -147,6 +166,10 @@ class FloatingButtonService : Service() {
                     isLongPressed = false
                     floatingView?.removeCallbacks(longPressRunnable)
                     floatingView?.postDelayed(longPressRunnable, LONG_PRESS_THRESHOLD)
+                    // Haptic feedback and scale animation
+                    v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+                    val core = v.findViewById<View>(R.id.floatingButtonCore)
+                    core?.animate()?.scaleX(0.9f)?.scaleY(0.9f)?.setDuration(100)?.start()
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -154,23 +177,36 @@ class FloatingButtonService : Service() {
                     val dy = (event.rawY - initialTouchY).toInt()
                     paramsRef.x = initialX + dx
                     paramsRef.y = initialY + dy
-                    windowManager.updateViewLayout(view, paramsRef)
+                    // Cancel long press if moving
+                    if (kotlin.math.abs(dx) > 10 || kotlin.math.abs(dy) > 10) {
+                        floatingView?.removeCallbacks(longPressRunnable)
+                    }
+                    try {
+                        windowManager.updateViewLayout(v, paramsRef)
+                    } catch (e: Exception) {
+                        // View may have been removed
+                    }
                     true
                 }
-                MotionEvent.ACTION_UP -> {
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     val upTime = SystemClock.elapsedRealtime()
                     val clickDuration = upTime - downTime
                     val dx = (event.rawX - initialTouchX).toInt()
                     val dy = (event.rawY - initialTouchY).toInt()
-                     floatingView?.removeCallbacks(longPressRunnable)
+                    floatingView?.removeCallbacks(longPressRunnable)
                     val isClick = clickDuration < CLICK_DURATION_THRESHOLD &&
                         kotlin.math.abs(dx) < MOVE_THRESHOLD &&
                         kotlin.math.abs(dy) < MOVE_THRESHOLD
 
+                    // Restore scale
+                    val core = v.findViewById<View>(R.id.floatingButtonCore)
+                    core?.animate()?.scaleX(1f)?.scaleY(1f)?.setDuration(100)?.start()
+                    
                     if (isLongPressed) {
                         // Long press already handled.
                         true
                     } else if (isClick) {
+                        v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
                         togglePanel()
                     } else {
                         snapToEdge(paramsRef)
@@ -182,9 +218,14 @@ class FloatingButtonService : Service() {
         }
 
         layoutParams = params
-        windowManager.addView(view, params)
-        floatingView = view
-        applyButtonAppearance()
+        try {
+            windowManager.addView(view, params)
+            floatingView = view
+            applyButtonAppearance()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Failed to show floating button: ${e.message}", Toast.LENGTH_LONG).show()
+            stopSelf()
+        }
     }
 
     private fun togglePanel() {
@@ -200,7 +241,7 @@ class FloatingButtonService : Service() {
 
         val themedContext = ContextThemeWrapper(this, R.style.Theme_AssistiveTouch)
         val inflater = LayoutInflater.from(themedContext)
-        val view = inflater.inflate(R.layout.view_action_panel, null)
+        val view = inflater.inflate(R.layout.view_action_panel_wrapper, null)
 
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -209,45 +250,80 @@ class FloatingButtonService : Service() {
             WindowManager.LayoutParams.TYPE_PHONE
         }
 
+        val screenWidth = resources.displayMetrics.widthPixels
+        val screenHeight = resources.displayMetrics.heightPixels
+
         val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            screenWidth,
+            screenHeight,
             layoutType,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
             PixelFormat.TRANSLUCENT
         )
 
-        // Center the panel on screen for clarity
-        params.gravity = Gravity.CENTER
+        // Full screen overlay
+        params.gravity = Gravity.TOP or Gravity.START
+        params.x = 0
+        params.y = 0
 
         val panelRoot = view.findViewById<View>(R.id.panelRoot)
-        // Blur disabled for now – it was making content too hard to read.
+        val backdrop = view.findViewById<View>(R.id.panelBackdrop)
+
+        // Set up backdrop click to close panel
+        backdrop?.setOnClickListener {
+            removePanel()
+        }
+        
+        // Prevent panel from closing when clicking inside it
+        panelRoot.setOnClickListener {
+            // Do nothing - prevent click from propagating to backdrop
+        }
 
         // Initial state for animation
         panelRoot.alpha = 0f
-        panelRoot.scaleX = 0.9f
-        panelRoot.scaleY = 0.9f
+        panelRoot.scaleX = 0.85f
+        panelRoot.scaleY = 0.85f
+        view.alpha = 0f
 
         // Wrap click actions; run action then minimize panel so system UI (e.g. screenshot) works as expected.
         fun wrapAndClose(action: () -> Unit): View.OnClickListener =
-            View.OnClickListener {
+            View.OnClickListener { view ->
+                view.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+                // Animate button press
+                view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100)
+                    .withEndAction {
+                        view.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                    }.start()
                 action()
                 removePanel()
             }
 
         // Wire core buttons
         view.findViewById<View>(R.id.buttonHome).setOnClickListener(
-            wrapAndClose { MyAccessibilityService.getInstance()?.performHomeAction() }
+            wrapAndClose { 
+                MyAccessibilityService.getInstance()?.performHomeAction() 
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
+            }
         )
         view.findViewById<View>(R.id.buttonBack).setOnClickListener(
-            wrapAndClose { MyAccessibilityService.getInstance()?.performBackAction() }
+            wrapAndClose { 
+                MyAccessibilityService.getInstance()?.performBackAction()
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
+            }
         )
         view.findViewById<View>(R.id.buttonRecents).setOnClickListener(
-            wrapAndClose { MyAccessibilityService.getInstance()?.performRecentsAction() }
+            wrapAndClose { 
+                MyAccessibilityService.getInstance()?.performRecentsAction()
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
+            }
         )
         view.findViewById<View>(R.id.buttonLock).setOnClickListener(
-            wrapAndClose { MyAccessibilityService.getInstance()?.performLockScreenAction() }
+            wrapAndClose { 
+                MyAccessibilityService.getInstance()?.performLockScreenAction()
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
+            }
         )
 
         // For screenshot, close the panel first and trigger screenshot slightly later
@@ -256,10 +332,14 @@ class FloatingButtonService : Service() {
             removePanel()
             screenshotButton.postDelayed({
                 MyAccessibilityService.getInstance()?.performScreenshotAction()
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
             }, 280L)
         }
         view.findViewById<View>(R.id.buttonNotifications).setOnClickListener(
-            wrapAndClose { MyAccessibilityService.getInstance()?.openNotificationsPanel() }
+            wrapAndClose { 
+                MyAccessibilityService.getInstance()?.openNotificationsPanel()
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
+            }
         )
 
         // System toggles & advanced actions
@@ -321,11 +401,12 @@ class FloatingButtonService : Service() {
         brightnessSlider.stepSize = 1f
         brightnessSlider.value = currentBrightness.toFloat()
 
-        val yellow = 0xFFFFD43B.toInt()
-        brightnessSlider.trackActiveTintList = ColorStateList.valueOf(yellow)
-        brightnessSlider.trackInactiveTintList = ColorStateList.valueOf(0xFF555555.toInt())
-        brightnessSlider.thumbTintList = ColorStateList.valueOf(0xFFFFFFFF.toInt())
-        brightnessSlider.haloTintList = ColorStateList.valueOf(yellow)
+        // Brightness slider colors - warm yellow/orange
+        val brightnessColor = 0xFFFF9800.toInt()
+        brightnessSlider.trackActiveTintList = ColorStateList.valueOf(brightnessColor)
+        brightnessSlider.trackInactiveTintList = ColorStateList.valueOf(0xFFE0E0E0.toInt())
+        brightnessSlider.thumbTintList = ColorStateList.valueOf(brightnessColor)
+        brightnessSlider.haloTintList = ColorStateList.valueOf(brightnessColor)
 
         var lastBrightness = currentBrightness
 
@@ -356,23 +437,36 @@ class FloatingButtonService : Service() {
             }
         }
 
-        windowManager.addView(view, params)
-        panelView = view
-        panelLayoutParams = params
-        applyPanelTheme()
+        try {
+            windowManager.addView(view, params)
+            panelView = view
+            panelLayoutParams = params
+            // Apply theme after view is added
+            view.post {
+                applyPanelTheme()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Failed to show panel: ${e.message}", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         // Animate in with spring-like overshoot
+        view.animate()
+            .alpha(1f)
+            .setDuration(200)
+            .start()
+        
         panelRoot.animate()
             .alpha(1f)
             .scaleX(1f)
             .scaleY(1f)
-            .setDuration(220)
-            .setInterpolator(OvershootInterpolator(1.3f))
+            .setDuration(250)
+            .setInterpolator(OvershootInterpolator(1.2f))
             .start()
     }
 
     private fun applyButtonAppearance() {
-        val core = floatingView?.findViewById<View>(R.id.floatingButtonCore) ?: return
+        val core = floatingView?.findViewById<com.google.android.material.card.MaterialCardView>(R.id.floatingButtonCore) ?: return
         val sizeDp = prefs.getInt(SettingsActivity.KEY_BUTTON_SIZE_DP, 56)
         val alphaPercent = prefs.getInt(SettingsActivity.KEY_BUTTON_ALPHA, 100)
         val colorKey = prefs.getString(SettingsActivity.KEY_BUTTON_COLOR, SettingsActivity.COLOR_BLUE)
@@ -384,23 +478,77 @@ class FloatingButtonService : Service() {
             width = sizePx
             height = sizePx
         }
-        core.alpha = (alphaPercent.coerceIn(30, 100) / 100f)
+        floatingView?.alpha = (alphaPercent.coerceIn(30, 100) / 100f)
 
         val color = when (colorKey) {
-            SettingsActivity.COLOR_RED -> 0xAAF44336.toInt()
-            SettingsActivity.COLOR_GREEN -> 0xAA4CAF50.toInt()
-            else -> 0xAA2196F3.toInt()
+            SettingsActivity.COLOR_RED -> ContextCompat.getColor(this, R.color.floating_button_red)
+            SettingsActivity.COLOR_GREEN -> ContextCompat.getColor(this, R.color.floating_button_green)
+            else -> ContextCompat.getColor(this, R.color.floating_button_blue)
         }
-        (core.background)?.setTint(color)
+        core.setCardBackgroundColor(color)
 
         floatingView?.requestLayout()
     }
 
     private fun applyPanelTheme() {
-        // Keep the glassmorphic dark background defined in XML;
-        // no dynamic override here so icons stay readable.
-        val panelRoot = panelView ?: return
-        panelRoot.alpha = 0.95f
+        val panelRoot = panelView?.findViewById<com.google.android.material.card.MaterialCardView>(R.id.panelRoot) ?: return
+        val theme = prefs.getString(SettingsActivity.KEY_PANEL_THEME, SettingsActivity.THEME_LIGHT) ?: SettingsActivity.THEME_LIGHT
+        
+        if (theme == SettingsActivity.THEME_DARK) {
+            // Dark theme
+            panelRoot.setCardBackgroundColor(0xE0212121.toInt())
+            // Update icon colors to light
+            updatePanelIconColors(0xFFFFFFFF.toInt())
+            // Update slider container backgrounds
+            updatePanelSliderContainers(0xFF2C2C2C.toInt(), 0xFFFFFFFF.toInt())
+        } else {
+            // Light theme
+            panelRoot.setCardBackgroundColor(0xF5FFFFFF.toInt())
+            // Update icon colors to dark
+            updatePanelIconColors(0xFF1C1B1F.toInt())
+            // Update slider container backgrounds
+            updatePanelSliderContainers(0xFFF0F0F0.toInt(), 0xFF666666.toInt())
+        }
+    }
+    
+    private fun updatePanelIconColors(color: Int) {
+        panelView?.let { view ->
+            val buttonIds = listOf(
+                R.id.buttonHome, R.id.buttonBack, R.id.buttonRecents,
+                R.id.buttonLock, R.id.buttonScreenshot, R.id.buttonFlashlight,
+                R.id.buttonNotifications, R.id.buttonWifi, R.id.buttonBluetooth
+            )
+            buttonIds.forEach { buttonId ->
+                val button = view.findViewById<View>(buttonId) as? android.view.ViewGroup
+                button?.let {
+                    // Find ImageView child
+                    for (i in 0 until it.childCount) {
+                        val child = it.getChildAt(i)
+                        if (child is android.widget.ImageView) {
+                            child.setColorFilter(color)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private fun updatePanelSliderContainers(bgColor: Int, iconColor: Int) {
+        panelView?.let { view ->
+            // Update volume slider container
+            view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.volumeSliderContainer)?.setCardBackgroundColor(bgColor)
+            
+            // Update brightness slider container
+            view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.brightnessSliderContainer)?.setCardBackgroundColor(bgColor)
+            
+            // Update volume icons
+            view.findViewById<android.widget.ImageView>(R.id.iconVolumeDown)?.setColorFilter(iconColor)
+            view.findViewById<android.widget.ImageView>(R.id.iconVolumeUp)?.setColorFilter(iconColor)
+            
+            // Update brightness icons
+            view.findViewById<android.widget.ImageView>(R.id.iconBrightnessLow)?.setColorFilter(iconColor)
+            view.findViewById<android.widget.ImageView>(R.id.iconBrightnessHigh)?.setColorFilter(iconColor)
+        }
     }
 
     private fun handleLongPress() {
@@ -409,15 +557,21 @@ class FloatingButtonService : Service() {
         when (actionKey) {
             SettingsActivity.ACTION_LOCK_SCREEN -> {
                 MyAccessibilityService.getInstance()?.performLockScreenAction()
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
             }
             SettingsActivity.ACTION_SCREENSHOT -> {
                 MyAccessibilityService.getInstance()?.performScreenshotAction()
+                    ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
             }
             SettingsActivity.ACTION_OPEN_SETTINGS -> {
-                val intent = Intent(this, SettingsActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                try {
+                    val intent = Intent(this, SettingsActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Unable to open settings", Toast.LENGTH_SHORT).show()
                 }
-                startActivity(intent)
             }
         }
     }
@@ -466,15 +620,25 @@ class FloatingButtonService : Service() {
     }
 
     private fun toggleFlashlight() {
-        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
-            val cameraId = cameraManager.cameraIdList.firstOrNull() ?: return
+            val cameraManager = getSystemService(Context.CAMERA_SERVICE) as? CameraManager
+                ?: run {
+                    Toast.makeText(this, "Camera service not available", Toast.LENGTH_SHORT).show()
+                    return
+                }
+            val cameraId = cameraManager.cameraIdList.firstOrNull()
+            if (cameraId == null) {
+                Toast.makeText(this, "No camera available", Toast.LENGTH_SHORT).show()
+                return
+            }
             isTorchOn = !isTorchOn
             cameraManager.setTorchMode(cameraId, isTorchOn)
         } catch (e: SecurityException) {
             Toast.makeText(this, "Camera permission required for torch", Toast.LENGTH_SHORT).show()
+        } catch (e: android.hardware.camera2.CameraAccessException) {
+            Toast.makeText(this, "Camera access error: ${e.message}", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            Toast.makeText(this, "Flashlight control not supported", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Flashlight control not supported: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -497,11 +661,17 @@ class FloatingButtonService : Service() {
     private fun removePanel() {
         val view = panelView ?: return
         val panelRoot = view.findViewById<View>(R.id.panelRoot)
+        
+        view.animate()
+            .alpha(0f)
+            .setDuration(150)
+            .start()
+        
         panelRoot.animate()
             .alpha(0f)
-            .scaleX(0.9f)
-            .scaleY(0.9f)
-            .setDuration(160)
+            .scaleX(0.85f)
+            .scaleY(0.85f)
+            .setDuration(200)
             .withEndAction {
                 try {
                     windowManager.removeView(view)
@@ -519,7 +689,7 @@ class FloatingButtonService : Service() {
 
         // Determine nearest horizontal edge (left or right)
         val centerX = params.x + (floatingView?.width ?: 0) / 2
-        params.x = if (centerX < screenWidth / 2) {
+        val targetX = if (centerX < screenWidth / 2) {
             0
         } else {
             screenWidth - (floatingView?.width ?: 0)
@@ -527,10 +697,21 @@ class FloatingButtonService : Service() {
 
         // Clamp vertically to screen bounds
         val maxY = screenHeight - (floatingView?.height ?: 0)
-        if (params.y < 0) params.y = 0
-        if (params.y > maxY) params.y = maxY
+        val targetY = params.y.coerceIn(0, maxY)
+        
+        params.x = targetX
+        params.y = targetY
 
-        windowManager.updateViewLayout(floatingView, params)
+        try {
+            // Animate to edge
+            floatingView?.animate()?.translationX((targetX - params.x).toFloat())?.setDuration(200)?.withEndAction {
+                floatingView?.translationX = 0f
+            }?.start()
+            windowManager.updateViewLayout(floatingView, params)
+        } catch (e: Exception) {
+            // View may have been removed
+            return
+        }
 
         prefs.edit()
             .putInt(PREF_KEY_X, params.x)

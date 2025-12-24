@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="56dp"
-    android:layout_height="56dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/floatingButtonContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:foreground="?attr/selectableItemBackgroundBorderless">
+    android:elevation="8dp"
+    android:translationZ="8dp">
 
-    <View
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/floatingButtonCore"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_floating_button" />
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="28dp"
+        app:cardBackgroundColor="?attr/colorPrimary"
+        android:clickable="false"
+        android:focusable="false">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_settings"
+            android:tint="?attr/colorOnPrimary"
+            android:clickable="false"
+            android:focusable="false" />
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>
 

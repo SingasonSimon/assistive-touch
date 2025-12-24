@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,121 +8,290 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings_button_size" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings_button_size"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textSizeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="56dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                android:paddingStart="8dp" />
+        </LinearLayout>
 
-        <SeekBar
+        <com.google.android.material.slider.Slider
             android:id="@+id/seekSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="96" />
+            android:valueFrom="0.0"
+            android:valueTo="56.0"
+            android:stepSize="1.0"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings_button_alpha"
-            android:layout_marginTop="16dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings_button_alpha"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textAlphaValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100%"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                android:paddingStart="8dp" />
+        </LinearLayout>
 
-        <SeekBar
+        <com.google.android.material.slider.Slider
             android:id="@+id/seekAlpha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="100" />
+            android:valueFrom="30.0"
+            android:valueTo="100.0"
+            android:stepSize="1.0"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_button_color"
-            android:layout_marginTop="16dp" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="28dp" />
 
-        <RadioGroup
-            android:id="@+id/groupColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/radioColorBlue"
-                android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+            <RadioGroup
+                android:id="@+id/groupColor"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Blue" />
+                android:padding="8dp"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radioColorRed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Red" />
+                <RadioButton
+                    android:id="@+id/radioColorBlue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Blue"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
 
-            <RadioButton
-                android:id="@+id/radioColorGreen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Green" />
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radioColorRed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Red"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioColorGreen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Green"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
+            </RadioGroup>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_panel_theme"
-            android:layout_marginTop="16dp" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="24dp" />
 
-        <RadioGroup
-            android:id="@+id/groupTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/radioThemeLight"
-                android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+            <RadioGroup
+                android:id="@+id/groupTheme"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Light" />
+                android:padding="8dp"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radioThemeDark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dark" />
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radioThemeLight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Light"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioThemeDark"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dark"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
+            </RadioGroup>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_long_press"
-            android:layout_marginTop="16dp" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="24dp" />
 
-        <RadioGroup
-            android:id="@+id/groupLongPress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/radioLongPressSettings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Open settings" />
-
-            <RadioButton
-                android:id="@+id/radioLongPressLock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lock screen" />
-
-            <RadioButton
-                android:id="@+id/radioLongPressScreenshot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Screenshot" />
-        </RadioGroup>
-
-        <Button
-            android:id="@+id/buttonApplySettings"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+            <RadioGroup
+                android:id="@+id/groupLongPress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioLongPressSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Open settings"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioLongPressLock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lock screen"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioLongPressScreenshot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Screenshot"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:padding="12dp" />
+            </RadioGroup>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Preview section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Preview"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="20dp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:gravity="center"
+                    android:background="?attr/colorSurface"
+                    android:padding="16dp">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/previewButton"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="center"
+                        app:cardElevation="6dp"
+                        app:cardCornerRadius="28dp"
+                        app:cardBackgroundColor="?attr/colorPrimary">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_settings"
+                            android:tint="?attr/colorOnPrimary"
+                            android:padding="16dp" />
+                    </com.google.android.material.card.MaterialCardView>
+                </FrameLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonApplySettings"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
             android:text="@string/settings_apply"
-            android:layout_marginTop="24dp" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="20dp"
+            style="@style/Widget.Material3.Button"
+            app:cornerRadius="12dp" />
 
     </LinearLayout>
 
