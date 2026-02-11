@@ -26,9 +26,6 @@ import android.media.AudioManager
 import android.provider.Settings
 import android.widget.Toast
 import android.hardware.camera2.CameraManager
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.SeekBar
 import android.content.res.ColorStateList
 import android.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
@@ -142,7 +139,7 @@ class FloatingButtonService : Service() {
             val screenWidth = resources.displayMetrics.widthPixels
             val screenHeight = resources.displayMetrics.heightPixels
 
-            // Restore last position if available, otherwise start at middle-right.
+            // Restore last position if available, otherwise start centered.
             val savedX = prefs.getInt(PREF_KEY_X, Int.MIN_VALUE)
             val savedY = prefs.getInt(PREF_KEY_Y, Int.MIN_VALUE)
             if (savedX != Int.MIN_VALUE && savedY != Int.MIN_VALUE) {
@@ -335,6 +332,19 @@ class FloatingButtonService : Service() {
                     ?: Toast.makeText(this, "Accessibility service not available", Toast.LENGTH_SHORT).show()
             }, 280L)
         }
+
+        val recordButton = view.findViewById<View>(R.id.buttonRecord)
+        recordButton.setOnClickListener {
+            removePanel()
+            recordButton.postDelayed({
+                if (ScreenRecordingService.isRecording) {
+                    ScreenRecordingService.requestStop(this)
+                } else {
+                    ScreenRecordingService.launchPermissionFlow(this)
+                }
+            }, 220L)
+        }
+
         view.findViewById<View>(R.id.buttonNotifications).setOnClickListener(
             wrapAndClose { 
                 MyAccessibilityService.getInstance()?.openNotificationsPanel()
@@ -429,7 +439,7 @@ class FloatingButtonService : Service() {
                 } else {
                     Toast.makeText(
                         this,
-                        "Allow modify system settings to change brightness.",
+                        "Allow modifying system settings to change brightness.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -515,7 +525,7 @@ class FloatingButtonService : Service() {
         panelView?.let { view ->
             val buttonIds = listOf(
                 R.id.buttonHome, R.id.buttonBack, R.id.buttonRecents,
-                R.id.buttonLock, R.id.buttonScreenshot, R.id.buttonFlashlight,
+                R.id.buttonLock, R.id.buttonScreenshot, R.id.buttonRecord, R.id.buttonFlashlight,
                 R.id.buttonNotifications, R.id.buttonWifi, R.id.buttonBluetooth
             )
             buttonIds.forEach { buttonId ->
@@ -642,14 +652,6 @@ class FloatingButtonService : Service() {
         }
     }
 
-    private fun showScreenRecordHint() {
-        Toast.makeText(
-            this,
-            "Screen recording is not available on this device. Use Samsung's built‑in recorder if present in Quick Settings.",
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
     private fun openPowerSettings() {
         Toast.makeText(
             this,
@@ -699,15 +701,16 @@ class FloatingButtonService : Service() {
         val maxY = screenHeight - (floatingView?.height ?: 0)
         val targetY = params.y.coerceIn(0, maxY)
         
+        val startX = params.x
         params.x = targetX
         params.y = targetY
 
         try {
             // Animate to edge
-            floatingView?.animate()?.translationX((targetX - params.x).toFloat())?.setDuration(200)?.withEndAction {
-                floatingView?.translationX = 0f
-            }?.start()
+            val deltaX = (startX - targetX).toFloat()
+            floatingView?.translationX = deltaX
             windowManager.updateViewLayout(floatingView, params)
+            floatingView?.animate()?.translationX(0f)?.setDuration(200)?.start()
         } catch (e: Exception) {
             // View may have been removed
             return
