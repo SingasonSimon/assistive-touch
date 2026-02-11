@@ -3,6 +3,8 @@ package com.example.assistivetouch
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.assistivetouch.prefs.FavoritesManager
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +38,7 @@ class FavoritesManagerTest {
 
         val result = FavoritesManager.getFavoritePackages(context)
 
-        assert(result.isEmpty())
+        assertTrue(result.isEmpty())
     }
 
     @Test
@@ -46,7 +48,7 @@ class FavoritesManagerTest {
 
         val result = FavoritesManager.getFavoritePackages(context)
 
-        assert(result == packages)
+        assertEquals(packages, result)
     }
 
     @Test

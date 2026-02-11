@@ -3,6 +3,8 @@ package com.example.assistivetouch
 import android.content.Context
 import android.provider.Settings
 import com.example.assistivetouch.service.MyAccessibilityService
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +35,7 @@ class MyAccessibilityServiceTest {
 
         val result = MyAccessibilityService.isEnabled(context)
 
-        assert(result)
+        assertTrue(result)
     }
 
     @Test
@@ -43,7 +45,7 @@ class MyAccessibilityServiceTest {
 
         val result = MyAccessibilityService.isEnabled(context)
 
-        assert(!result)
+        assertFalse(result)
     }
 
     @Test
@@ -53,7 +55,7 @@ class MyAccessibilityServiceTest {
 
         val result = MyAccessibilityService.isEnabled(context)
 
-        assert(!result)
+        assertFalse(result)
     }
 
     @Test
@@ -65,7 +67,18 @@ class MyAccessibilityServiceTest {
 
         val result = MyAccessibilityService.isEnabled(context)
 
-        assert(result)
+        assertTrue(result)
     }
+    @Test
+    fun testIsEnabled_whenServiceIdHasWrongClass_returnsFalse() {
+        val serviceId = "com.example.assistivetouch/com.example.assistivetouch.service.OtherService"
+        `when`(Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES))
+            .thenReturn(serviceId)
+
+        val result = MyAccessibilityService.isEnabled(context)
+
+        assertFalse(result)
+    }
+
 }
 

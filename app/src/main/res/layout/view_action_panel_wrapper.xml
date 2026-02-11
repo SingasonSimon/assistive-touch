@@ -103,6 +103,18 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/buttonRecord"
+                    style="@style/PanelItem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:tint="#1C1B1F"
+                        android:src="@drawable/ic_record" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/buttonFlashlight"
                     style="@style/PanelItem"
                     android:layout_width="0dp"
